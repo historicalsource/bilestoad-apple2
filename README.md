@@ -14,3 +14,4 @@ For more information on the Apple II Game "The Bilestoad":
 * [Interview with Mark Goodman/Mangrove Earthshoe, creator of The Bilestoad](https://dadgum.com/halcyon/BOOK/GOODMAN.HTM)
 * [Gametales: The Bilestoad, by John Romero](https://rome.ro/news/2015/12/13/gametales-the-bilestoad)
 
+Additional information about the [LISA Assembler](https://en.wikipedia.org/wiki/Lazer%27s_Interactive_Symbolic_Assembler) is on Wikipedia.
