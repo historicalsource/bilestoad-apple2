@@ -1,0 +1,575 @@
+         LST 
+;FRONT
+XCALC    JSR XMUS
+         LDA DIV
+         SEC 
+         SBC #$04
+         STA DIV
+         RTS 
+XMUS     LDA #$00
+         STA DIV
+         LDA #$E0
+         STA QUO
+         LDA XVAL
+         LDY #$06
+LP       CMP QUO
+         BLT CON
+         SBC QUO
+CON      ROL DIV
+         LSR QUO
+         DEY 
+         BNE LP
+         STA REM
+         RTS 
+YCALC    LDA YVAL
+         SEC 
+         SBC #36
+         JSR YMUS
+         RTS 
+REYCAL   LDA YVAL
+YMUS     PHA 
+         PHA 
+         AND #$C0
+         STA YLO
+         PLA 
+         LSR 
+         ROR 
+         PHA 
+         AND #$30
+         ORA YLO
+         STA YLO
+         PLA 
+         ROR 
+         ROR 
+         ROR YLO
+         AND #$03
+         STA YHI
+         PLA 
+         ASL 
+         ASL 
+         AND #$1C
+         ORA YHI
+         ORA PAGE
+         STA YHI
+         RTS 
+DLIN     LDA YHI
+         CLC 
+         ADC #$04
+         PHA 
+         AND #$1C
+         BEQ DLIN2
+         PLA 
+         STA YHI
+         RTS 
+DLIN2    PLA 
+         SEC 
+         SBC #$20
+         ASL YLO
+         ROL 
+         ADC #$01
+         PHA 
+         AND #$07
+         BEQ DLIN3
+         PLA 
+         LSR 
+         ROR YLO
+         STA YHI
+         RTS 
+DLIN3    LSR YLO
+         PLA 
+         LSR 
+         SEC 
+         SBC #$04
+         STA YHI
+         LDA YLO
+         CLC 
+         ADC #$28
+         CMP #$A0
+         BEQ DLIN4
+         STA YLO
+         RTS 
+DLIN4    LDA #$00
+         STA YLO
+         RTS 
+MUSIC    JSR >1
+         JSR >1
+         JSR >1
+         JSR >1
+^2       RTS 
+^1       INC $FF
+         LDA $FF
+         CMP $FE
+         BLT >1
+         LDA #$00
+         STA $FF
+         STA $C030
+         RTS 
+^1       LDA #$00
+         LDA $FF
+         LDA $0000
+         RTS 
+CLEAR    LDA PAGE
+         STA YHI
+         LDY #$00
+         STY YLO
+         LDA $FE
+         CMP #$FF
+         BEQ >1
+         LDA #$20
+         STA MUSIC
+         JMP >2
+^1       LDA #$60
+         STA MUSIC
+^2       LDX #$60
+CLLP1    LDA #$2A
+         STA (YLO),Y
+         INY 
+         CPY #31
+         BEQ CLPP2
+         LDA #$55
+         STA (YLO),Y
+         INY 
+         JMP CLLP1
+CLPP2    LDY #$00
+         JSR MUSIC
+         JSR DLIN
+CLLP2    LDA BAKCOL
+         STA (YLO),Y
+         INY 
+         CPY #31
+         BEQ >1
+         LDA BAKCOL
+         STA (YLO),Y
+         INY 
+         JMP CLLP2
+^1       LDY #$00
+         JSR MUSIC
+         JSR DLIN
+         DEX 
+         BNE CLLP1
+         LDA #$80
+         STA BAKCOL
+DBOXES   LDA PAGE
+         STA YHI
+         LDA #31
+         STA YLO
+         JSR DBMUS
+         JSR DBMUS
+         JSR DBMUS
+         JSR SPOT
+         RTS 
+DBMUS    LDA #$7F
+         LDY #$08
+         LDX #31
+DBTL1    STA (YLO),Y
+         DEY 
+         BPL DBTL1
+         JSR DLIN
+DBOLN    LDY #$08
+         LDA #$E0
+         STA (YLO),Y
+         DEY 
+         LDA #$80
+ODLPC    STA (YLO),Y
+         DEY 
+         BNE ODLPC
+         LDA #$83
+         STA (YLO),Y
+         JSR DLIN
+EVLNE    LDY #$08
+         LDA #$75
+         STA (YLO),Y
+         DEY 
+EVLPC    LDA #$2A
+         STA (YLO),Y
+         DEY 
+         BEQ TERMEV
+         LDA #$55
+         STA (YLO),Y
+         DEY 
+         JMP EVLPC
+TERMEV   LDA #$57
+         STA (YLO),Y
+         JSR DLIN
+         DEX 
+         BNE DBOLN
+         LDA #$FF
+         LDY #$08
+DBBL1    STA (YLO),Y
+         DEY 
+         BPL DBBL1
+         JSR DLIN
+         RTS 
+SPOT     LDA OCEAN+12
+         ASL 
+         STA XVAL
+         LDA #129
+         STA YVAL
+         JSR XMUS
+         JSR RYCAL
+         JSR LFTOCN
+         LDA OCEAN+13
+         ASL 
+         STA XVAL
+         LDA #129
+         STA YVAL
+         JSR XMUS
+         JSR RYCAL
+         JSR RGTOCN
+         LDA OCEAN+14
+         STA TN2
+         LDA #129
+         STA YVAL
+         JSR RYCAL
+         JSR RADEV
+         LDA OCEAN+15
+         STA TN2
+         LDA #$5F
+         JSR ROSFIN
+         RTS 
+DRAGRD   LDA #$20
+         STA XLO
+         LDA #$01
+         STA XHI
+         JSR LOADHG
+         LDA #$60
+         STA XLO
+         LDA #$02
+         STA XHI
+         JSR LOADHG
+         LDA #$A0
+         STA XLO
+         LDA #$04
+         STA XHI
+         JSR LOADHG
+         LDA #$E0
+         STA XLO
+         LDA #$08
+         STA XHI
+         JSR LOADHG
+         LDA #$20
+         STA XLO
+         LDA #$01
+         STA XHI
+         JSR LOADVG
+         LDA #$60
+         STA XLO
+         LDA #$02
+         STA XHI
+         JSR LOADVG
+         LDA #$A0
+         STA XLO
+         LDA #$04
+         STA XHI
+         JSR LOADVG
+         LDA #$E0
+         STA XLO
+         LDA #$08
+         STA XHI
+         JSR LOADVG
+         RTS 
+LOADHG   LDA WINDX
+         SEC 
+         SBC XLO
+         EOR #$FF
+         STA TEMP2
+         LDA WINDXH
+         ADC #$00
+^2       AND XHI
+         BNE >6
+         RTS 
+^6       LDA TEMP2
+         ORA #$01
+         STA XVAL
+         JSR XMUS
+         LDA #$03
+         LDX XLO
+         BEQ >8
+         CPX #$04
+         BGE >2
+^1       ASL 
+         DEX 
+         BNE <1
+         STA TEMP
+         JMP >3
+^2       LDA #$C0
+^1       LSR 
+         INX 
+         CPX #$07
+         BLT <1
+^8       STA TEMP
+^3       LDA #$00
+         STA YLO
+         LDA PAGE
+         STA YHI
+         LDY XHI
+         CPY #31
+         BGE >2
+         LDX #192
+^1       LDA TEMP
+         EOR #$FF
+         AND (YLO),Y
+         STA (YLO),Y
+         JSR DLIN
+         DEX 
+         BNE <1
+^2       RTS 
+LOADVG   LDA WINDY
+         SEC 
+         SBC XLO
+         EOR #$FF
+         STA TEMP2
+         LDA WINDYH
+         ADC #$00
+^2       AND XHI
+         BNE >7
+         RTS 
+^7       LDA TEMP2
+         AND #$FE
+         CMP #192
+         BGE >4
+         STA YVAL
+         JSR RYCAL
+         LDA #$00
+         LDY #30
+^1       STA (YLO),Y
+         DEY 
+         BPL <1
+^4       RTS 
+OUTBLK   JSR XCALC
+         JSR YCALC
+         LDA XSIZE
+         CLC 
+         ADC #$01
+         STA SHIFTH
+         ASL 
+         TAX 
+         LDA #$60
+         STA MSHI,X
+         STA BSHI,X
+         LDX YSIZE
+OLP1     LDA YLO
+         AND #$78
+         CMP #$78
+         BEQ OLP3
+         LDA SND
+         BNE >1
+         JSR NOISEB
+         JSR MOVEL
+         JSR NOISEB
+         JSR PREP
+         JSR NOISEB
+         JSR OUTLN
+         JSR NOISEB
+         LDA N5
+         BEQ OOOOOO
+         JSR NOISE
+OOOOOO   JSR NOISEB
+OLP2     DEX 
+         BNE OLP1
+         LDA SHIFTH
+         ASL 
+         TAX 
+         LDA #$26
+         STA BSHI,X
+         STA MSHI,X
+         RTS 
+^1       JSR MOVEL
+         JSR PREP
+         JSR OUTLN
+         JMP OLP2
+OLP3     JSR CONMOV
+         JSR DLIN
+         JMP OLP2
+PROC     HEX 01
+NOISE    LDA $C030
+WHITE    LDA PROC
+         PHA 
+         PLP 
+         ROL $4E
+         ROL $4F
+         BCC NOISE2
+         LDA $C030
+NOISE2   ROR 
+         ROR 
+         ROR 
+         EOR $4F
+         ASL 
+         ASL 
+         ASL 
+         PHP 
+         PLA 
+         STA PROC
+         RTS 
+NOISEB   LDA N2
+         BEQ NSBRTS
+NOISEC   INC N1
+         BNE NSBRTS
+         DEC N2
+         LDA N2
+         STA N1
+         LDA $C030
+NSBRTS   RTS 
+MOVEL    LDY XSIZE
+         LDA #$00
+         STA BYTES
+         STA BYTES,Y
+         STA BYTES+1,Y
+         LDA #$FF
+         STA MASKS
+         STA MASKS,Y
+         STA MASKS+1,Y
+         LDA XLO
+         AND #$04
+         BEQ MLP1
+MLP2     LDA (BLKL),Y
+         STA BYTES,Y
+         LDA (MSKL),Y
+         STA MASKS,Y
+         DEY 
+         BNE MLP2
+         BEQ CONMOV
+MLP1     LDA (BLKL),Y
+         STA BYTES-1,Y
+         LDA (MSKL),Y
+         STA MASKS-1,Y
+         DEY 
+         BNE MLP1
+CONMOV   LDA BLKL
+         CLC 
+         ADC XSIZE
+         STA BLKL
+         LDA BLKH
+         ADC #$00
+         STA BLKH
+         LDA MSKL
+         CLC 
+         ADC XSIZE
+         STA MSKL
+         LDA MSKH
+         ADC #$00
+         STA MSKH
+         RTS 
+PREP     STX XREG
+         LDA #$00
+         STA SHIFTL
+         LDX XLO
+         BEQ PREPL2
+         CPX #$04
+         BLT PREPL1
+PREPL3   JSR USHIFT
+         JSR UMSHI
+         INX 
+         CPX #$07
+         BLT PREPL3
+         BGE PREPL4
+PREPL1   CLC 
+         JSR BSHI
+         SEC 
+         JSR MSHI
+         DEX 
+         BNE PREPL1
+PREPL2   CLC 
+         JSR BSHI
+         SEC 
+         JSR MSHI
+PREPL4   LDX XREG
+         RTS 
+USHIFT   CLC 
+         ROR BYTES+5
+         ROR BYTES+4
+         ROR BYTES+3
+         ROR BYTES+2
+         ROR BYTES+1
+         ROR BYTES
+         RTS 
+UMSHI    SEC 
+         ROR MASKS+5
+         ROR MASKS+4
+         ROR MASKS+3
+         ROR MASKS+2
+         ROR MASKS+1
+         ROR MASKS
+         RTS 
+BSHI     ROL BYTES
+BSHI2    ROL BYTES+1
+BSHI3    ROL BYTES+2
+BSHI4    ROL BYTES+3
+BSHI5    ROL BYTES+4
+BSHI6    ROL BYTES+5
+BSHI7    ROL BYTES+6
+         RTS 
+MSHI     ROL MASKS
+MSHI2    ROL MASKS+1
+MSHI3    ROL MASKS+2
+MSHI4    ROL MASKS+3
+MSHI5    ROL MASKS+4
+MSHI6    ROL MASKS+5
+MSHI7    ROL MASKS+6
+         RTS 
+OUTLN    STX XREG
+         LDX #$00
+         LDY XHI
+OUTLP1   CPY #31
+         BGE OB2
+         LDA MASKS,X
+         AND #$7F
+         EOR #$7F
+         ORA (YLO),Y
+         STA TEMP
+         LDA BYTES,X
+         AND #$7F
+         EOR TEMP
+         STA (YLO),Y
+OB2      INY 
+         INX 
+         CPX SHIFTH
+         BEQ OUTEX
+         CPY #31
+         BGE OB3
+         LDA MASKS,X
+         LSR 
+         EOR #$7F
+         ORA (YLO),Y
+         STA TEMP
+         LDA BYTES,X
+         LSR 
+         EOR TEMP
+         STA (YLO),Y
+OB3      INY 
+         INX 
+         CPX SHIFTH
+         BNE OUTLP1
+OUTEX    LDX #$00
+         LDY XHI
+OUTEL    INY 
+         CPY #31
+         BGE OUTEX2
+         LDA MASKS,X
+         EOR BYTES,X
+         BMI OUTEX2
+         LDA (YLO),Y
+         ORA #$01
+         STA (YLO),Y
+OUTEX2   INX 
+         DEY 
+         CPY #31
+         BGE OUTEX3
+         CPX SHIFTH
+         BEQ OUTEX4
+         LDA MASKS,X
+         EOR BYTES,X
+         AND #$01
+         BNE OUTEX3
+         LDA (YLO),Y
+         ORA #$40
+         STA (YLO),Y
+OUTEX3   INY 
+         INY 
+         INX 
+         CPX SHIFTH
+         BLT OUTEL
+OUTEX4   JSR DLIN
+         LDX XREG
+         RTS 
+         ICL "MAPS"

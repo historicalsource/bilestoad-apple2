@@ -1,0 +1,450 @@
+         NLS 
+;INTRO
+XLO      EPZ $00
+REM      EPZ $00
+XHI      EPZ $01
+DIV      EPZ $01
+XVAL     EPZ $02
+QUO      EPZ $03
+YVAL     EPZ $04
+RYLO     EPZ $05
+YLO      EPZ $05
+RYHI     EPZ $06
+YHI      EPZ $06
+YSIZE    EPZ $07
+XSIZE    EPZ $08
+SHIFTL   EPZ $09
+SHIFTH   EPZ $0A
+XREG     EPZ $0B
+BLKL     EPZ $0C
+BLKH     EPZ $0D
+MSKL     EPZ $0E
+MSKH     EPZ $0F
+YREG     EPZ $10
+TEMP     EPZ $11
+TN1      EPZ $12
+TN2      EPZ $13
+PAGE     EPZ $14
+N1       EPZ $15
+N2       EPZ $16
+FDTIME   EPZ $17
+HDX      EPZ $1D
+HDY      EPZ $1E
+HDN      EPZ $1F
+RNDNEW   EPZ $4E
+RNDOLD   EPZ $4F
+BLO      EPZ $86
+BHI      EPZ $87
+MLO      EPZ $88
+MHI      EPZ $89
+         JSR $FC58
+         LDA #$20
+         STA PAGE
+         JSR FCLEAR
+         LDX #$12
+^1       LDA MES2-1,X
+         JSR $FDED
+         DEX 
+         BNE <1
+         LDA $C050
+         LDA $C057
+         LDA $C054
+         LDA $C052
+         LDA #$40
+         STA PAGE
+         JSR CLEAR
+         LDA #$01
+         STA FDTIME
+         STA N1
+         LDA #$00
+         STA N2
+         LDA #$71
+         STA HDX
+         LDA #$85
+         STA HDY
+         JSR SWITCH
+         LDA #$07
+         STA HDN
+         JSR DHD
+         JSR DSOLVE
+         JSR SWITCH
+         JSR DHD
+         JSR SWITCH
+         JSR D1
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D1
+         JSR SWITCH
+         JSR D2
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D2
+         JSR SWITCH
+         JSR D3
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D3
+         JSR SWITCH
+         JSR D4
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D4
+         JSR SWITCH
+         JSR D5
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D5
+         JSR SWITCH
+         JSR D6
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D6
+         JSR SWITCH
+         JSR D7
+         JSR DSOLVE
+         JSR SWITCH
+         JSR D7
+         JSR SWITCH
+         JSR D8
+         JSR DSOLVE
+         JSR SWITCH
+         JSR $FC58
+         LDX #139
+^1       LDA MESS6-1,X
+         JSR $FDED
+         DEX 
+         BNE <1
+         LDA $C051
+         LDA $C054
+         LDA $C010
+^1       INC RNDNEW
+         BNE >2
+         INC RNDOLD
+^2       LDA $C000
+         BPL <1
+         LDX #$0B
+^1       LDA MESS-1,X
+         JSR $FDED
+         DEX 
+         BNE <1
+MESS     .DA #$8D,"NIB NURB",#$84,#$8D
+MESS6    .DA "DEVRESER STHGIR LLA          ERAWTFOS TSOMATAD  YB 2891 THGIRYPOC )C(",#$8D
+         .DA #$8D,#$8D,#$8D,#$8D
+         .DA "EOHSHTRAE EVORGNAM YB         ",#$8D
+         .DA "DAOTSELIB EHT             ",#$8D,#$8D,#$8D,#$8D,#$8D,#$8D,#$8D,#$8D
+MES2     .DA #$8D,"0006$A,BI DAOLB",#$84,#$8D
+         RTS 
+D1       JMP >1
+D2       JMP >2
+D3       JMP >3
+D4       JMP >4
+D5       JMP >5
+D6       JMP >6
+D7       JMP >7
+D8       LDX #$0C
+         LDA #$40
+         STA HDY
+^9       LDA ME1-1,X
+         STA HDN
+         LDA ME2-1,X
+         STA HDX
+         TXA 
+         PHA 
+         JSR DHD
+         PLA 
+         TAX 
+         DEX 
+         BNE <9
+         RTS 
+ME1      HEX 08090A0B0C0D0A0E0F101112
+ME2      HEX 1024386C8490A0B0C0D0E0F0
+^1       LDA #$07
+         STA HDN
+         JSR DHD
+         LDA #$06
+         STA HDN
+         JSR DHD
+         RTS 
+^2       LDA #$05
+         STA HDN
+         JSR DHD
+         RTS 
+^3       LDA #$04
+         STA HDN
+         JSR DHD
+         RTS 
+^4       LDA #$03
+         STA HDN
+         JSR DHD
+         RTS 
+^5       LDA #$02
+         STA HDN
+         JSR DHD
+         RTS 
+^6       LDA #$01
+         STA HDN
+         JSR DHD
+         RTS 
+^7       LDA #$00
+         STA HDN
+         JSR DHD
+         RTS 
+RND      LDA RNDNEW
+         PHA 
+         ASL 
+         LDA RNDOLD
+         ADC RNDNEW
+         STA RNDNEW
+         PLA 
+         STA RNDOLD
+         RTS 
+         RTS 
+RELOC    LDX #$7F
+         STX MHI
+         LDY #$00
+         STY MLO
+         STY BLO
+         LDA #$BF
+         STA BHI
+         LDX #$60
+^1       LDA (MLO),Y
+         STA (BLO),Y
+         LDA #$00
+         STA (MLO),Y
+         INY 
+         BNE <1
+         DEC MHI
+         DEC BHI
+         DEX 
+         BNE <1
+         RTS 
+DHD      LDA HDN
+         ASL 
+         TAX 
+         LDA HS,X
+         STA MSKL
+         LDA HS+1,X
+         STA MSKH
+         LDA DS,X
+         STA BLKL
+         LDA DS+1,X
+         STA BLKH
+         LDA HD,X
+         BMI >1
+         LDA HDX
+         SEC 
+         SBC HD,X
+         BCC DHDEX
+         STA XVAL
+         JMP >2
+^1       LDA HDX
+         SEC 
+         SBC HD,X
+         BCS DHDEX
+         STA XVAL
+^2       LDA HD+1,X
+         BMI DHSK2A
+         LDA HDY
+         SEC 
+         SBC HD+1,X
+         BCC DHDEX
+         STA YVAL
+         JMP DHSK2B
+DHSK2A   LDA HDY
+         SEC 
+         SBC HD+1,X
+         BCS DHDEX
+         STA YVAL
+DHSK2B   LDA HSIZ+1,X
+         STA YSIZE
+         LDA HSIZ,X
+         STA XSIZE
+DHREM    JSR OUTBLK
+DHDEX    RTS 
+XCALC    LDA #$00
+         STA DIV
+         LDA #$E0
+         STA QUO
+         LDA XVAL
+         LDY #$06
+LP       CMP QUO
+         BLT CON
+         SBC QUO
+CON      ROL DIV
+         LSR QUO
+         DEY 
+         BNE LP
+         STA REM
+         RTS 
+YCALC    LDA YVAL
+         SEC 
+         SBC #36
+         JSR YMUS
+         RTS 
+REYCAL   LDA YVAL
+YMUS     PHA 
+         PHA 
+         AND #$C0
+         STA YLO
+         PLA 
+         LSR 
+         ROR 
+         PHA 
+         AND #$30
+         ORA YLO
+         STA YLO
+         PLA 
+         ROR 
+         ROR 
+         ROR YLO
+         AND #$03
+         STA YHI
+         PLA 
+         ASL 
+         ASL 
+         AND #$1C
+         ORA YHI
+         ORA PAGE
+         STA YHI
+         RTS 
+DLIN     LDA YHI
+         CLC 
+         ADC #$04
+         PHA 
+         AND #$1C
+         BEQ DLIN2
+         PLA 
+         STA YHI
+         RTS 
+DLIN2    PLA 
+         SEC 
+         SBC #$20
+         ASL YLO
+         ROL 
+         ADC #$01
+         PHA 
+         AND #$07
+         BEQ DLIN3
+         PLA 
+         LSR 
+         ROR YLO
+         STA YHI
+         RTS 
+DLIN3    LSR YLO
+         PLA 
+         LSR 
+         SEC 
+         SBC #$04
+         STA YHI
+         LDA YLO
+         CLC 
+         ADC #$28
+         CMP #$A0
+         BEQ DLIN4
+         STA YLO
+         RTS 
+DLIN4    LDA #$00
+         STA YLO
+         RTS 
+OUTBLK   JSR XCALC
+         JSR YCALC
+         LDX YSIZE
+OLP1     JSR MOVEL
+         JSR PREP
+         JSR OUTLN
+         DEX 
+         BNE OLP1
+         RTS 
+MOVEL    LDY XSIZE
+         LDA #$00
+         STA BYTES,Y
+         STA BYTES+1,Y
+         LDA #$FF
+         STA MASKS,Y
+         STA MASKS+1,Y
+MLP1     LDA (BLKL),Y
+         STA BYTES-1,Y
+         LDA (MSKL),Y
+         STA MASKS-1,Y
+         DEY 
+         BNE MLP1
+         LDA BLKL
+         CLC 
+         ADC XSIZE
+         STA BLKL
+         LDA BLKH
+         ADC #$00
+         STA BLKH
+         LDA MSKL
+         CLC 
+         ADC XSIZE
+         STA MSKL
+         LDA MSKH
+         ADC #$00
+         STA MSKH
+         RTS 
+PREP     STX XREG
+         LDX XSIZE
+         INX 
+         INX 
+         STX SHIFTH
+         LDA #$00
+         STA SHIFTL
+         LDX XLO
+         BEQ PREPL2
+PREPL1   JSR SHIFT
+         DEX 
+         BNE PREPL1
+PREPL2   STX SHIFTL
+         JSR SHIFT
+         LSR BYTES,X
+         SEC 
+         ROR MASKS,X
+         INX 
+         CPX SHIFTH
+         BNE PREPL2
+         LDX XREG
+         RTS 
+SHIFT    STX YREG
+         CLC 
+         LDX SHIFTL
+         PHP 
+SHIFL1   PLP 
+         ROL BYTES,X
+         PHP 
+         INX 
+         CPX SHIFTH
+         BNE SHIFL1
+         PLP 
+         SEC 
+         LDX SHIFTL
+         PHP 
+SHIFL2   PLP 
+         ROL MASKS,X
+         PHP 
+         INX 
+         CPX SHIFTH
+         BNE SHIFL2
+         PLP 
+         LDX YREG
+         RTS 
+OUTLN    STX XREG
+         LDX #$00
+         LDY XHI
+OUTLP1   LDA MASKS,X
+         EOR #$FF
+         ORA (YLO),Y
+         EOR BYTES,X
+         STA (YLO),Y
+         INY 
+         INX 
+         CPX SHIFTH
+         BNE OUTLP1
+         JSR DLIN
+         LDX XREG
+         RTS 
+;
+BYTES    HEX 00000000000000000000
+;
+MASKS    HEX 00000000000000000000
+         ICL "TWO"

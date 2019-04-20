@@ -1,0 +1,1380 @@
+;INTRO
+XLO      EPZ $00
+REM      EPZ $00
+XHI      EPZ $01
+DIV      EPZ $01
+XVAL     EPZ $02
+QUO      EPZ $03
+YVAL     EPZ $04
+RYLO     EPZ $05
+YLO      EPZ $05
+RYHI     EPZ $06
+YHI      EPZ $06
+YSIZE    EPZ $07
+XSIZE    EPZ $08
+SHIFTL   EPZ $09
+SHIFTH   EPZ $0A
+XREG     EPZ $0B
+BLKL     EPZ $0C
+BLKH     EPZ $0D
+MSKL     EPZ $0E
+MSKH     EPZ $0F
+YREG     EPZ $10
+TIME     EPZ $11
+CH       EPZ $12
+TN1      EPZ $12
+HC       EPZ $13
+TN2      EPZ $13
+PAGE     EPZ $14
+PDL1     EPZ $15
+PAD0     EPZ $15
+PDL0     EPZ $16
+PAD1     EPZ $16
+OLDP0    EPZ $17
+OLDP1    EPZ $18
+PADDLE   EPZ $19
+PLAYER   EPZ $1A
+THRUS    EPZ $1B
+PADB     EPZ $1C
+HDX      EPZ $1D
+HDY      EPZ $1E
+HDN      EPZ $1F
+RNDNEW   EPZ $4E
+RNDOLD   EPZ $4F
+HEADX    EPZ $50
+HEADY    EPZ $51
+HEADN    EPZ $52
+RTORSO   EPZ $53
+RRSHL    EPZ $54
+RLSHL    EPZ $55
+RARM     EPZ $56
+RSHI     EPZ $57
+RWEP     EPZ $58
+HEAD2X   EPZ $59
+LSHLX    EPZ $5A
+RSHLX    EPZ $5B
+WEPX     EPZ $5C
+SHIX     EPZ $5D
+ARMX     EPZ $5E
+HANDX    EPZ $5F
+BLADEX   EPZ $60
+HEAD2Y   EPZ $61
+LSHLY    EPZ $62
+RSHLY    EPZ $63
+WEPY     EPZ $64
+SHIY     EPZ $65
+ARMY     EPZ $66
+HANDY    EPZ $67
+BLADEY   EPZ $68
+TORSON   EPZ $69
+LSHLN    EPZ $6A
+RSHLN    EPZ $6B
+WEPN     EPZ $6C
+SHIN     EPZ $6D
+ARMN     EPZ $6E
+HEAD3X   EPZ $6F
+HEAD3Y   EPZ $77
+TORS2N   EPZ $7F
+H3       EPZ $85
+BLO      EPZ $86
+BHI      EPZ $87
+MLO      EPZ $88
+MHI      EPZ $89
+DX       EPZ $8A
+DY       EPZ $8B
+LSTAT    EPZ $8C
+GENER    EPZ $8D
+GEN1     EPZ $8E
+GEN2     EPZ $8F
+GENER2   EPZ $90
+TEMP     EPZ $91
+CENX     EPZ $92
+CENY     EPZ $93
+HEADXH   EPZ $94
+HEADYH   EPZ $95
+HEA2XH   EPZ $96
+HEA2YH   EPZ $97
+STATUS   EPZ $9C
+BYTES    EPZ $9D
+MASKS    EPZ $A5
+YPOSM    EPZ $AD
+XPOSM    EPZ $AE
+WINDX    EPZ $AF
+WINDXH   EPZ $B0
+WINDY    EPZ $B1
+WINDYH   EPZ $B2
+N1       EPZ $B3
+N2       EPZ $B4
+N3       EPZ $B5
+N4       EPZ $B6
+COUNT    EPZ $B7
+H2       EPZ $B8
+LSHLXH   EPZ $B9
+RSHLXH   EPZ $BA
+WEPXH    EPZ $BB
+SHIXH    EPZ $BC
+ARMXH    EPZ $BD
+LSHLYH   EPZ $BE
+RSHLYH   EPZ $BF
+WEPYH    EPZ $C0
+SHIYH    EPZ $C1
+ARMYH    EPZ $C2
+RELHX    EPZ $C3
+RELHY    EPZ $C4
+REL2HX   EPZ $C5
+REL2HY   EPZ $C6
+RAD1X    EPZ $C7
+RAD1XH   EPZ $C8
+RAD1Y    EPZ $C9
+RAD1YH   EPZ $CA
+RAD2X    EPZ $CB
+RAD2XH   EPZ $CC
+RAD2Y    EPZ $CD
+RAD2YH   EPZ $CE
+RHX      EPZ $CF
+HXH      EPZ $D0
+RHY      EPZ $D1
+HYH      EPZ $D2
+DRNUM    EPZ $D3
+DXH      EPZ $D4
+DYH      EPZ $D5
+SCOREL   EPZ $D6
+SCOREH   EPZ $D7
+N5       EPZ $D8
+S1       EPZ $D9
+S2       EPZ $DA
+S3       EPZ $DB
+S4       EPZ $DC
+SC2L     EPZ $DD
+SC2H     EPZ $DE
+SC1L     EPZ $DF
+SC1H     EPZ $E0
+INVIEW   EPZ $E5
+BAKCOL   EPZ $E6
+TEMP2    EPZ $E7
+GAMENO   EPZ $E8
+MPL      EPZ $E9
+MPH      EPZ $EA
+RIDE     EPZ $EB
+RID1     EPZ $EC
+RID2     EPZ $ED
+FTN      EPZ $EE
+FTN2     EPZ $EF
+FDTIME   EPZ $F0
+PSWARD   EPZ $F1
+PS2      EPZ $F2
+CLASS    EPZ $F3
+CL2      EPZ $F4
+ISNO     EPZ $F5
+RNXL     EPZ $F6
+RNXH     EPZ $F7
+RNYL     EPZ $F8
+RNYH     EPZ $F9
+PLXL     EPZ $FA
+PLXH     EPZ $FB
+SND      EPZ $FC
+         JSR RELOC
+RIN      JSR RINIT
+LOCA     JMP STA
+         JSR RANK
+BEGIN    JMP GAME
+ENDING   JSR PROMO
+         JSR GSOLVE
+         LDA $C010
+^1       LDA $C000
+         BPL <1
+         JMP RIN
+GAME     JSR SWAP2
+         JSR START
+         JSR SWAP2
+         JSR SWAP2
+         JSR LOOK
+         JSR SWAP
+         JSR LOOK
+         JSR FANFAR
+         JSR SWAP
+         JSR SWITCH
+PATCH:   
+^9       JSR SIGHT
+         JSR PDL
+         JSR TROPSM
+         JSR PDL
+         JSR DRSCRN
+         JSR PDL
+         JSR CLOCK
+         JSR PDL
+         JSR SWITCH
+         JSR PDL
+         JSR DEATH
+         JSR PDL
+         JSR RNGMUS
+         JSR PDL
+         JSR SWAP
+         JSR PDL
+         JSR DEATH
+         JSR PDL
+         JSR RNGMUS
+         JSR PDL
+         JMP <9
+DRAPLA   JSR BODCLC
+         JSR BODDRW
+         JSR PLARAD
+         JSR PDL
+         RTS 
+DRAIR    JSR RNGRAD
+         LDA HEADX
+         STA HDX
+         LDA HEADY
+         STA HDY
+         LDA PLAYER
+         BEQ >1
+         LDA CLASS
+         CMP CL2
+         BEQ >2
+         BLT >2
+         JMP >3
+^1       LDA CL2
+         CMP CLASS
+         BEQ >2
+         BLT >2
+^3       LDA #$7B
+         STA HDN
+         JSR DHD
+         RTS 
+^2       LDA #$7A
+         STA HDN
+         JSR DHD
+         RTS 
+DRSCRN   JSR CENTER
+THERST   JSR BKGRND
+         JSR DRAPLA
+         JSR SWAP
+         JSR DRAPLA
+         JSR OUTSCO
+CLSOUN   LDA #$00
+         STA N2
+         STA N3
+         STA N5
+         LDA #$FF
+         STA $FE
+         STA N1
+         RTS 
+BKGRND   JSR DRAGRD
+         JSR FLOWER
+         JSR DRAOCN
+         JSR DRARNG
+         JSR TERAIN
+         JSR RADXO
+         JSR PDL
+         RTS 
+DRAMNS   JSR CENTER
+         JSR BKGRND
+         JSR DRAPLA
+         JSR OUTSCO
+         JSR PDL
+         RTS 
+FANFAR   LDA #$20
+         STA PAGE
+         LDA #$10
+         STA TIME
+         JSR SWAP
+         JSR CLSOUN
+         JSR SIGHT
+         JSR CENTER
+         JSR BKGRND
+         JSR OUTSCO
+         LDA #$01
+         STA FDTIME
+         JSR TSOLVE
+         JSR SWITCH
+         JSR BKGRND
+         JSR OUTSCO
+         JSR SWITCH
+         JSR BKGRND
+         JSR BODCLC
+         JSR DRAIR
+         JSR OUTSCO
+         JSR DSOLVE
+         JSR SWITCH
+         JSR BKGRND
+         JSR DRAIR
+         JSR OUTSCO
+         JSR SWITCH
+         JSR BKGRND
+         JSR DRAIR
+         JSR DRAPLA
+         JSR OUTSCO
+         JSR DSOLVE
+         JSR SWITCH
+         JSR BKGRND
+         JSR DRAIR
+         JSR DRAPLA
+         JSR OUTSCO
+         JSR SWITCH
+         JSR DRAMNS
+         JSR DSOLVE
+         JSR SWITCH
+         LDA #$00
+         STA TIME
+         JSR DRAMNS
+         JSR SWITCH
+         JSR DRAMNS
+         JSR SWAP
+         JSR BODCLC
+         JSR DRAIR
+         JSR DSOLVE
+         JSR SWITCH
+         JSR SWAP
+         JSR DRAMNS
+         JSR SWAP
+         JSR BODCLC
+         JSR DRAIR
+         JSR SWITCH
+         JSR SWAP
+         JSR DRAMNS
+         JSR SWAP
+         JSR BODCLC
+         JSR DRAIR
+         JSR DRAPLA
+         JSR DSOLVE
+         JSR SWITCH
+         JSR SWAP
+         JSR DRAMNS
+         JSR SWAP
+         JSR BODCLC
+         JSR DRAIR
+         JSR DRAPLA
+         JSR SWITCH
+         JSR SWAP
+         JSR DRSCRN
+         JSR DSOLVE
+         JSR SWITCH
+         LDA #$20
+         STA PAGE
+         RTS 
+CLOCK    INC TIME
+         LDA INVIEW
+         BEQ >1
+         LDA SND
+         BNE >1
+         INC MPL
+         BNE >2
+         INC MPH
+^2       LDY #$00
+         LDA (MPL),Y
+         BEQ >3
+         STA $FE
+         RTS 
+^3       LDA /NOTE
+         STA MPH
+         LDA #NOTE
+         STA MPL
+         LDA #$FF
+         STA $FE
+         RTS 
+^1       LDA #$FF
+         STA $FE
+         RTS 
+RELOC    LDX #$7F
+         STX MHI
+         LDY #$00
+         STY SND
+         STY MLO
+         STY BLO
+         LDA #$BF
+         STA BHI
+         LDX #$60
+^1       LDA (MLO),Y
+         STA (BLO),Y
+         LDA #$00
+         STA (MLO),Y
+         INY 
+         BNE <1
+         DEC MHI
+         DEC BHI
+         DEX 
+         BNE <1
+         LDA /NOTE
+         STA MPH
+         LDA #NOTE
+         STA MPL
+         RTS 
+RINIT    LDX #$00
+         STX SC1L
+         STX SC2L
+         LDA #$50
+         STA SC1H
+         STA SC2H
+         LDA #$04
+         STA GAMENO
+         RTS 
+RNGRAD   LDA #$10
+         STA DRNUM
+         JMP ANYRAD
+PLARAD   LDA PLAYER
+         AND #$08
+         CLC 
+         ADC #$04
+         STA DRNUM
+ANYRAD   LDA HEADXH
+         STA HXH
+         LDA RELHX
+         STA RHX
+         LDA HEADYH
+         STA HYH
+         LDA RELHY
+         STA RHY
+         JSR RADAR
+         RTS 
+RADAR    LDA RHX
+         SEC 
+         SBC RAD1X
+         STA TN1
+         LDA HXH
+         SBC RAD1XH
+         LSR 
+         ROR TN1
+         LSR 
+         ROR TN1
+         LSR 
+         ROR TN1
+         LSR 
+         BNE RD1SK
+         ROR TN1
+         LDA TN1
+         STA XVAL
+         LDA RHY
+         SEC 
+         SBC RAD1Y
+         STA TN1
+         LDA HYH
+         SBC RAD1YH
+         LSR 
+         ROR TN1
+         LSR 
+         ROR TN1
+         LSR 
+         ROR TN1
+         LSR 
+         BNE RD1SK
+         ROR TN1
+         LDA TN1
+         STA YVAL
+         CMP #61
+         BGE RD1SK
+         JSR RADMN
+RD1SK    LDA RHX
+         SEC 
+         SBC RAD2X
+         STA TN1
+         LDA HXH
+         SBC RAD2XH
+         ASL TN1
+         ROL 
+         BCS RAD2SK
+         ASL TN1
+         ROL 
+         BCS RAD2SK
+         ASL TN1
+         ROL 
+         BCS RAD2SK
+         STA XVAL
+         LDA RHY
+         SEC 
+         SBC RAD2Y
+         STA TN1
+         LDA HYH
+         SBC RAD2YH
+         ASL TN1
+         ROL 
+         BCS RAD2SK
+         ASL TN1
+         ROL 
+         BCS RAD2SK
+         ASL TN1
+         ROL 
+         BCS RAD2SK
+         CMP #61
+         BGE RAD2SK
+         ORA #$40
+         STA YVAL
+         JSR RADMN
+RAD2SK   LDA HXH
+         ASL 
+         ASL 
+         AND #$3F
+         EOR #$20
+         STA XVAL
+         LDA HYH
+         ASL 
+         ASL 
+         AND #$3F
+         EOR #$20
+         CMP #61
+         BGE RAD3SK
+         ORA #$80
+         STA YVAL
+         JSR RADMN
+RAD3SK   RTS 
+RADMN    JSR RXCAL
+         JSR RYCAL
+         JSR DRABN
+         RTS 
+RXCAL    JSR XMUS
+         CLC 
+         LDA XHI
+         ADC #31
+         STA XHI
+         RTS 
+RYCAL    JSR REYCAL
+         RTS 
+DRABN    LDX DRNUM
+         LDY XHI
+         CPY #31
+         BLT DRBRTS
+         CPY #40
+         BGE DRBRTS
+         LDA XLO
+         CMP #$03
+         BGE >2
+^1       LDA #$F0
+         AND (YLO),Y
+         ORA DRBYT-1,X
+         STA (YLO),Y
+         JSR DLIN
+         DEX 
+         TXA 
+         AND #$03
+         BNE <1
+         RTS 
+^2       LDA #$87
+         AND (YLO),Y
+         ORA DRBYT2-1,X
+         STA (YLO),Y
+         JSR DLIN
+         DEX 
+         TXA 
+         AND #$03
+         BNE <2
+DRBRTS   RTS 
+DRBYT2   HEX 00000000003030007878787878484878
+DRBYT    HEX 00000000000606000F0F0F0F0F09090F
+BODCLC   LDA RELHX
+         SEC 
+         SBC WINDX
+         STA HEAD2X
+         STA HEADX
+         LDA RELHY
+         SEC 
+         SBC WINDY
+         STA HEADY
+         STA HEAD2Y
+         LDA HEADN
+         CLC 
+         ADC RTORSO
+         AND #$0F
+         STA TORSON
+         CLC 
+         ADC RLSHL
+         AND #$0F
+         STA LSHLN
+         CLC 
+         ADC RSHI
+         AND #$0F
+         STA SHIN
+         CLC 
+         ADC RWEP
+         AND #$0F
+         STA WEPN
+         LDA TORSON
+         CLC 
+         ADC RRSHL
+         AND #$0F
+         STA RSHLN
+         CLC 
+         ADC RARM
+         AND #$0F
+         STA ARMN
+         LDX TORSON
+         LDA TORDX,X
+         BMI >1
+         CLC 
+         ADC HEADX
+         STA RSHLX
+         LDA #$00
+         ADC #$00
+         STA RSHLXH
+         JMP >2
+^1       CLC 
+         ADC HEADX
+         STA RSHLX
+         LDA #$00
+         SBC #$00
+         STA RSHLXH
+^2       LDX RSHLN
+         LDA STOEX,X
+         BMI >1
+         CLC 
+         ADC RSHLX
+         STA ARMX
+         LDA RSHLXH
+         ADC #$00
+         STA ARMXH
+         JMP >2
+^1       CLC 
+         ADC RSHLX
+         STA ARMX
+         LDA RSHLXH
+         SBC #$00
+         STA ARMXH
+^2       LDX ARMN
+         LDA ARMX
+         CLC 
+         ADC STOEX,X
+         STA HANDX
+         LDX TORSON
+         LDA TORDY,X
+         BMI >1
+         CLC 
+         ADC HEADY
+         STA RSHLY
+         LDA #$00
+         ADC #$00
+         STA RSHLYH
+         JMP >2
+^1       CLC 
+         ADC HEADY
+         STA RSHLY
+         LDA #$00
+         SBC #$00
+         STA RSHLYH
+^2       LDX RSHLN
+         LDA STOEY,X
+         BMI >1
+         CLC 
+         ADC RSHLY
+         STA ARMY
+         LDA RSHLYH
+         ADC #$00
+         STA ARMYH
+         JMP >2
+^1       CLC 
+         ADC RSHLY
+         STA ARMY
+         LDA RSHLYH
+         SBC #$00
+         STA ARMYH
+^2       LDX ARMN
+         LDA ARMY
+         CLC 
+         ADC STOEY,X
+         STA HANDY
+         LDX TORSON
+         LDA TORDX,X
+         BMI >1
+         LDA HEADX
+         SEC 
+         SBC TORDX,X
+         STA LSHLX
+         LDA #$00
+         SBC #$00
+         STA LSHLXH
+         JMP >2
+^1       LDA HEADX
+         SEC 
+         SBC TORDX,X
+         STA LSHLX
+         LDA #$00
+         ADC #$00
+         STA LSHLXH
+^2       LDX LSHLN
+         LDA STOEX,X
+         BMI >1
+         CLC 
+         ADC LSHLX
+         STA SHIX
+         LDA LSHLXH
+         ADC #$00
+         STA SHIXH
+         JMP >2
+^1       CLC 
+         ADC LSHLX
+         STA SHIX
+         LDA LSHLXH
+         SBC #$00
+         STA SHIXH
+^2       LDX SHIN
+         LDA STOEX,X
+         BMI >1
+         CLC 
+         ADC SHIX
+         STA WEPX
+         LDA SHIXH
+         ADC #$00
+         STA WEPXH
+         JMP >2
+^1       CLC 
+         ADC SHIX
+         STA WEPX
+         LDA SHIXH
+         SBC #$00
+         STA WEPXH
+^2       LDX WEPN
+         LDA WTOBX,X
+         CLC 
+         ADC WEPX
+         STA BLADEX
+         LDX TORSON
+         LDA TORDY,X
+         BMI >1
+         LDA HEADY
+         SEC 
+         SBC TORDY,X
+         STA LSHLY
+         LDA #$00
+         SBC #$00
+         STA LSHLYH
+         JMP >2
+^1       LDA HEADY
+         SEC 
+         SBC TORDY,X
+         STA LSHLY
+         LDA #$00
+         ADC #$00
+         STA LSHLYH
+^2       LDX LSHLN
+         LDA STOEY,X
+         BMI >1
+         CLC 
+         ADC LSHLY
+         STA SHIY
+         LDA LSHLYH
+         ADC #$00
+         STA SHIYH
+         JMP >2
+^1       CLC 
+         ADC LSHLY
+         STA SHIY
+         LDA LSHLYH
+         SBC #$00
+         STA SHIYH
+^2       LDX SHIN
+         LDA STOEY,X
+         BMI >1
+         CLC 
+         ADC SHIY
+         STA WEPY
+         LDA SHIYH
+         ADC #$00
+         STA WEPYH
+         JMP >2
+^1       CLC 
+         ADC SHIY
+         STA WEPY
+         LDA SHIYH
+         SBC #$00
+         STA WEPYH
+^2       LDX WEPN
+         LDA WTOBY,X
+         CLC 
+         ADC WEPY
+         STA BLADEY
+         RTS 
+SIGHT    LDA #$00
+         STA INVIEW
+         LDA RELHX
+         SEC 
+         SBC REL2HX
+         LDA HEADXH
+         SBC HEA2XH
+         BEQ >1
+         CMP #$FF
+         BEQ >1
+         STA INVIEW
+         RTS 
+^1       LDA RELHY
+         SEC 
+         SBC REL2HY
+         LDA HEADYH
+         SBC HEA2YH
+         BEQ >2
+         CMP #$FF
+         BEQ >2
+         STA INVIEW
+^2       RTS 
+BODDRW   LDA RELHX
+         SEC 
+         SBC WINDX
+         LDA HEADXH
+         SBC WINDXH
+         BNE <2
+         LDA RELHY
+         SEC 
+         SBC WINDY
+         LDA HEADYH
+         SBC WINDYH
+         BNE <2
+         JSR DRAFT
+         LDA WEPXH
+         ORA WEPYH
+         BNE SKPWEP
+         LDA WEPX
+         STA HDX
+         LDA WEPY
+         STA HDY
+         LDA WEPN
+         ORA #$50
+         STA HDN
+         LDA BLOOD+3
+         AND #$80
+         STA STATUS
+         JSR DHD
+         LDA WEPN
+         ORA #$60
+         STA HDN
+         JSR DHD
+SKPWEP   LDA LSHLXH
+         ORA LSHLYH
+         BNE SKPLSH
+         LDA LSHLX
+         STA HDX
+         LDA LSHLY
+         STA HDY
+         LDA LSHLN
+         ORA #$10
+         STA HDN
+         LDA BLOOD+1
+         AND #$80
+         STA STATUS
+         JSR DHD
+SKPLSH   LDA RSHLXH
+         ORA RSHLYH
+         BNE >1
+         LDA RSHLX
+         STA HDX
+         LDA RSHLY
+         STA HDY
+         LDA RSHLN
+         ORA #$10
+         STA HDN
+         LDA BLOOD+2
+         AND #$80
+         STA STATUS
+         JSR DHD
+^1       LDA HEADX
+         STA HDX
+         LDA HEADY
+         STA HDY
+         LDA TORSON
+         ORA #$20
+         STA HDN
+         LDA BLOOD
+         AND #$80
+         STA STATUS
+         JSR DHD
+         LDA SHIXH
+         ORA SHIYH
+         BNE >1
+         LDA SHIX
+         STA HDX
+         LDA SHIY
+         STA HDY
+         LDA SHIN
+         ORA #$30
+         STA HDN
+         LDA BLOOD+4
+         AND #$80
+         STA STATUS
+         JSR DHD
+^1       LDA ARMXH
+         ORA ARMYH
+         BNE >1
+         LDA ARMX
+         STA HDX
+         LDA ARMY
+         STA HDY
+         LDA ARMN
+         ORA #$40
+         STA HDN
+         LDA BLOOD+5
+         AND #$80
+         STA STATUS
+         JSR DHD
+^1       LDA #$00
+         STA STATUS
+         LDA HEADX
+         STA HDX
+         LDA HEADY
+         STA HDY
+         LDA HEADN
+         STA HDN
+         JSR DHD
+         LDA #$05
+         STA COUNT
+^1       LDX COUNT
+         LDA BLOOD-1,X
+         BEQ >2
+         AND #$80
+         BNE >2
+         LDA BLOOD-1,X
+         LSR 
+         ADC #$6F
+         STA HDN
+         LDA HEAD2X-1,X
+         AND #$FE
+         STA HDX
+         LDA HEAD2Y-1,X
+         ORA #$01
+         STA HDY
+         JSR DHD
+^2       DEC COUNT
+         BNE <1
+         RTS 
+DRAFT    LDA FTN
+         BNE >1
+         JSR OFT
+         JSR OFT2
+         RTS 
+^1       LSR 
+         AND #$03
+         BNE >8
+         JSR OFT
+         RTS 
+^8       CMP #$01
+         BNE >8
+         JSR >5
+         JSR >4
+         RTS 
+^8       CMP #$02
+         BEQ >9
+         JSR >6
+         JSR >3
+         RTS 
+^9       JSR OFT2
+         RTS 
+^1       LDA TORSON
+         CLC 
+         ADC #$0C
+         ORA #$10
+         STA HDN
+         LDA RSHLX
+         STA HDX
+         LDA RSHLY
+         STA HDY
+         JSR DHD
+         RTS 
+^3       LDA TORSON
+         CLC 
+         ADC #$04
+         ORA #$30
+         STA HDN
+         LDA LSHLX
+         STA HDX
+         LDA LSHLY
+         STA HDY
+         JSR DHD
+         RTS 
+^2       LDA TORSON
+         CLC 
+         ADC #$0C
+         ORA #$10
+         STA HDN
+         LDA LSHLX
+         STA HDX
+         LDA LSHLY
+         STA HDY
+         JSR DHD
+         RTS 
+^4       LDA TORSON
+         CLC 
+         ADC #$04
+         ORA #$30
+         STA HDN
+         LDA RSHLX
+         STA HDX
+         LDA RSHLY
+         STA HDY
+         JSR DHD
+         RTS 
+^5       LDA TORSON
+         CLC 
+         ADC #$0C
+         AND #$0F
+         TAX 
+         LDA LSHLX
+         SEC 
+         SBC TORDX,X
+         CLC 
+         ADC STOEX,X
+         STA HDX
+         LDA LSHLY
+         SEC 
+         SBC TORDY,X
+         CLC 
+         ADC STOEY,X
+         STA HDY
+         TXA 
+         EOR #$08
+         ORA #$30
+         STA HDN
+         JSR DHD
+         JSR <2
+         RTS 
+^6       LDA TORSON
+         CLC 
+         ADC #$0C
+         AND #$0F
+         TAX 
+         LDA RSHLX
+         SEC 
+         SBC TORDX,X
+         CLC 
+         ADC STOEX,X
+         STA HDX
+         LDA RSHLY
+         SEC 
+         SBC TORDY,X
+         CLC 
+         ADC STOEY,X
+         STA HDY
+         TXA 
+         EOR #$08
+         ORA #$30
+         STA HDN
+         JSR DHD
+         JSR <1
+         RTS 
+DHD      JSR PDL
+         LDA STATUS
+         BNE DHDEX
+         LDA HDN
+         ASL 
+         TAX 
+         LDA HS,X
+         STA MSKL
+         LDA HS+1,X
+         STA MSKH
+         LDA DS,X
+         STA BLKL
+         LDA DS+1,X
+         STA BLKH
+         LDA HD,X
+         BMI >1
+         LDA HDX
+         SEC 
+         SBC HD,X
+         BCC DHDEX
+         STA XVAL
+         JMP >2
+^1       LDA HDX
+         SEC 
+         SBC HD,X
+         BCS DHDEX
+         STA XVAL
+^2       LDA HD+1,X
+         BMI DHSK2A
+         LDA HDY
+         SEC 
+         SBC HD+1,X
+         BCC DHDEX
+         STA YVAL
+         JMP DHSK2B
+DHSK2A   LDA HDY
+         SEC 
+         SBC HD+1,X
+         BCS DHDEX
+         STA YVAL
+DHSK2B   LDA HSIZ+1,X
+         STA YSIZE
+         LDA HSIZ,X
+         STA XSIZE
+         CMP #$03
+         BGE DHREM
+         CMP #$01
+         BEQ ONEBOT
+         JMP TWOBOT
+DHREM    JSR OUTBLK
+DHDEX    RTS 
+ONEBOT   JSR XCALC
+         JSR YCALC
+ONEOLP   LDY #$01
+         LDA YLO
+         AND #$78
+         CMP #$78
+         BEQ NONEOT
+         LDA (BLKL),Y
+         STA BYTES
+         LDA (MSKL),Y
+         STA MASKS
+         LDY XHI
+         LDA #$00
+         STA BYTES+1
+         LDA #$FF
+         STA MASKS+1
+         LDX XLO
+         CPX #$06
+         BEQ ONESKP
+         INX 
+         CPX #$04
+         BGE SL2
+SLP      ASL BYTES
+         ROL BYTES+1
+         SEC 
+         ROL MASKS
+         ROL MASKS+1
+         DEX 
+         BPL SLP
+         LSR BYTES
+         LDA MASKS
+         LSR 
+         EOR #$7F
+         CPY #31
+         BGE ONES1A
+         ORA (YLO),Y
+         EOR BYTES
+         STA (YLO),Y
+ONES1A   INY 
+         CPY #31
+         BGE NONEOT
+         LDA MASKS+1
+         AND #$7F
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES+1
+         STA (YLO),Y
+NONEOT   JSR DLIN
+         INC BLKL
+         BNE NONE2
+         INC BLKH
+NONE2    INC MSKL
+         BNE NONE3
+         INC MSKH
+NONE3    DEC YSIZE
+         BNE ONEOLP
+         RTS 
+SL2      LSR BYTES
+         ROR BYTES+1
+         SEC 
+         ROR MASKS
+         ROR MASKS+1
+         INX 
+         CPX #$07
+         BLT SL2
+ONESKP   LSR BYTES+1
+         LDA MASKS+1
+         LSR 
+         EOR #$7F
+         CPY #31
+         BGE ONES1B
+         ORA (YLO),Y
+         EOR BYTES+1
+         STA (YLO),Y
+ONES1B   INY 
+         CPY #31
+         BGE NONEOT
+         LDA BYTES
+         PHA 
+         AND #$7F
+         STA BYTES
+         PLA 
+         AND #$80
+         EOR MASKS
+         BPL ONES3B
+         AND #$7F
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES
+         STA (YLO),Y
+         JMP NONEOT
+ONES3B   EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES
+         STA (YLO),Y
+         INY 
+         LDA #$01
+         ORA (YLO),Y
+         STA (YLO),Y
+         JMP NONEOT
+TWOBOT   JSR XCALC
+         JSR YCALC
+TWOOLP   LDY #$01
+         LDA YLO
+         AND #$78
+         CMP #$78
+         BEQ NTWOOT
+         LDA (BLKL),Y
+         STA BYTES
+         LDA (MSKL),Y
+         STA MASKS
+         INY 
+         LDA (BLKL),Y
+         STA BYTES+1
+         LDA (MSKL),Y
+         STA MASKS+1
+         LDY XHI
+         LDA #$00
+         STA BYTES+2
+         LDA #$FF
+         STA MASKS+2
+         LDX XLO
+         CPX #$06
+         BNE TWOJ
+         JMP TWOSKP
+TWOJ     INX 
+         CPX #$04
+         BGE TSL2
+TSLP     ASL BYTES
+         ROL BYTES+1
+         ROL BYTES+2
+         SEC 
+         ROL MASKS
+         ROL MASKS+1
+         ROL MASKS+2
+         DEX 
+         BPL TSLP
+         LSR BYTES
+         ASL BYTES+1
+         ROL BYTES+2
+         LSR BYTES+1
+         LSR MASKS
+         ASL MASKS+1
+         ROL MASKS+2
+         LSR MASKS+1
+         CPY #31
+         BGE TWOS1A
+         LDA MASKS
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES
+         STA (YLO),Y
+TWOS1A   INY 
+         CPY #31
+         BGE TWOS2A
+         LDA MASKS+1
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES+1
+         STA (YLO),Y
+TWOS2A   INY 
+         CPY #31
+         BGE NTWOOT
+         LDA MASKS+2
+         AND #$7F
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES+2
+         STA (YLO),Y
+NTWOOT   JSR DLIN
+         LDA BLKL
+         CLC 
+         ADC #$02
+         STA BLKL
+         LDA BLKH
+         ADC #$00
+         STA BLKH
+         LDA MSKL
+         CLC 
+         ADC #$02
+         STA MSKL
+         LDA MSKH
+         ADC #$00
+         STA MSKH
+         DEC YSIZE
+         BEQ TSLSK
+         JMP TWOOLP
+TSLSK    RTS 
+TSL2     LSR BYTES+1
+         ROR BYTES
+         ROR BYTES+2
+         SEC 
+         ROR MASKS+1
+         ROR MASKS
+         ROR MASKS+2
+         INX 
+         CPX #$07
+         BLT TSL2
+TWOSKP   LSR BYTES+2
+         LSR MASKS+2
+         ASL BYTES
+         ROL BYTES+1
+         LSR BYTES
+         ASL MASKS
+         ROL MASKS+1
+         LSR MASKS
+         CPY #31
+         BGE TWOS1B
+         LDA MASKS+2
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES+2
+         STA (YLO),Y
+TWOS1B   INY 
+         CPY #31
+         BGE TWOS2B
+         LDA MASKS
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES
+         STA (YLO),Y
+TWOS2B   INY 
+         CPY #31
+         BGE NTWOOT
+         LDA BYTES+1
+         AND #$7F
+         STA BYTES+1
+         LDA MASKS+1
+         BPL TWOS3B
+         AND #$7F
+         EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES+1
+         STA (YLO),Y
+         JMP NTWOOT
+TWOS3B   EOR #$7F
+         ORA (YLO),Y
+         EOR BYTES+1
+         STA (YLO),Y
+         INY 
+         LDA #$01
+         ORA (YLO),Y
+         STA (YLO),Y
+         JMP NTWOOT
+OFT      LDA TORSON
+         CLC 
+         ADC #$02
+         AND #$0F
+         TAX 
+         ADC #$03
+         AND #$0F
+         ORA #$30
+         STA HDN
+         LDA HEADX
+         ADC TORDX,X
+         STA HDX
+         LDA HEADY
+         CLC 
+         ADC TORDY,X
+         STA HDY
+         JSR DHD
+         RTS 
+OFT2     LDA TORSON
+         SEC 
+         SBC #$02
+         AND #$0F
+         TAX 
+         CLC 
+         ADC #$05
+         AND #$0F
+         ORA #$30
+         STA HDN
+         LDA HEADX
+         SEC 
+         SBC TORDX,X
+         STA HDX
+         LDA HEADY
+         SEC 
+         SBC TORDY,X
+         STA HDY
+         JSR DHD
+         RTS 
+         ICL "PRELINK"
